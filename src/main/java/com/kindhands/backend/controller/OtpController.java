@@ -20,7 +20,6 @@ public class OtpController {
         this.otpRepo = otpRepo;
     }
 
-    // 1️⃣ SEND OTP
     @PostMapping("/send")
     public ResponseEntity<?> sendOtp(@RequestBody OtpVerification request) {
 
@@ -45,12 +44,11 @@ public class OtpController {
         return ResponseEntity.ok("OTP sent successfully");
     }
 
-    // 2️⃣ VERIFY OTP
     @PostMapping("/verify")
     public ResponseEntity<?> verifyOtp(@RequestBody OtpVerification request) {
 
         Optional<OtpVerification> otpOpt =
-                otpRepo.findOptionalByMobile(request.getMobile());
+                otpRepo.findTopByMobileOrderByIdDesc(request.getMobile());
 
         if (otpOpt.isEmpty()) {
             return ResponseEntity.status(404).body("OTP not found");
@@ -69,4 +67,3 @@ public class OtpController {
         return ResponseEntity.ok("OTP verified successfully");
     }
 }
-
